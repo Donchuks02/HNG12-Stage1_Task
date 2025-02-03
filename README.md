@@ -21,7 +21,7 @@ The Number Classifier API is a Django REST Framework-based service that accepts 
 - **Armstrong Number Check:** Identifies Armstrong (narcissistic) numbers.
 - **Parity Check:** Evaluates whether the number is odd or even.
 - **Digit Sum:** Calculates the sum of the number's digits.
-- **Fun Fact:** Retrieves a fun fact about the number using the [Numbers API](http://numbersapi.com/#42).
+- **Fun Fact:** Retrieves a fun fact about the number using the [Numbers API](http://numbersapi.com/#42/math).
 
 ## Installation
 
@@ -139,7 +139,8 @@ If an error occurs (e.g., invalid input or missing query parameter), the API ret
 
 ```json
 {
-  "error": "Invalid input: Please provide a valid number."
+  'number': 'alphabet', 
+  'error': true
 }
 ```
 

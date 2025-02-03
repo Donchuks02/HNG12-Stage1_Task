@@ -48,7 +48,7 @@ def classify_number(request):
     else:
         properties.append('odd')
     
-    response = requests.get(f'http://numbersapi.com/{number}')
+    response = requests.get(f'http://numbersapi.com/{number}/math')
     fun_fact = response.text if response.status_code == 200 else 'No fun fact available'
 
     return Response({'number': number, 'is_prime': is_prime(number), 'is_perfect': is_perfect(number),'properties': properties,'digit_sum': digit_sum(number),  'fun_fact': fun_fact})
