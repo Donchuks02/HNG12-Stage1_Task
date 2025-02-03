@@ -1,7 +1,3 @@
-Below is an example of a `README.md` file tailored for a Django REST Framework project:
-
----
-
 # Number Classifier API
 
 The Number Classifier API is a Django REST Framework-based service that accepts a number as input and returns interesting mathematical properties along with a fun fact. Whether you're curious about prime numbers, Armstrong numbers, or just want to know the sum of its digits, this API is here to help!
@@ -40,7 +36,7 @@ The Number Classifier API is a Django REST Framework-based service that accepts 
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/yourusername/number-classifier-api.git
+   git clone https://github.com/Donchuks02/HNG12-Stage1_Task.git
    cd number-classifier-api
    ```
 
@@ -159,7 +155,3 @@ Contributions are welcome! To contribute:
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
-
----
-
-Feel free to modify and extend this `README.md` to fit any additional needs or specific instructions for your Django REST Framework implementation. Enjoy building your API!
