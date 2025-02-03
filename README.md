@@ -37,7 +37,7 @@ The Number Classifier API is a Django REST Framework-based service that accepts 
 
    ```bash
    git clone https://github.com/Donchuks02/HNG12-Stage1_Task.git
-   cd number-classifier-api
+   cd HNG12-Stage1_Task
    ```
 
 2. **Create and Activate a Virtual Environment:**
