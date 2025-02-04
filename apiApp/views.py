@@ -1,11 +1,10 @@
 import math
 import requests
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-# URL template for the Numbers API
+# URL for the Numbers API
 NUMBERS_API_URL = "http://numbersapi.com/{}?json"
 
 
@@ -15,7 +14,7 @@ def is_armstrong(n: int) -> bool:
     An Armstrong number is one that is equal to the sum of its own digits each raised to the power
     of the number of digits.
     """
-    n = abs(n)  # Work with the absolute value for the check.
+    n = abs(n)
     digits = [int(digit) for digit in str(n)]
     power = len(digits)
     return sum(d ** power for d in digits) == n
@@ -28,7 +27,7 @@ def is_perfect(n: int) -> bool:
     Here, only positive numbers can be perfect.
     """
     if n <= 0:
-        return False  # Perfect numbers are defined only for positive integers.
+        return False 
     return sum(i for i in range(1, n) if n % i == 0) == n
 
 
@@ -76,7 +75,7 @@ class ClassifyNumberAPIView(APIView):
         except requests.RequestException:
             fun_fact = f"No fun fact returned from the numbers API for the number: {number}"
 
-        # Build the response data.
+        # response data.
         result = {
             "number": number,
             "is_prime": is_prime,
