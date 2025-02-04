@@ -52,7 +52,7 @@ class ClassifyNumberAPIView(APIView):
         # Calculate the mathematical properties.
         armstrong = is_armstrong(number)
         perfect = is_perfect(number)
-        # Check for prime (only numbers greater than 1 can be prime).
+        # Check for prime only numbers greater than 1 can be prime.
         is_prime = number > 1 and all(number % i != 0 for i in range(2, int(math.sqrt(number)) + 1))
         is_odd = number % 2 != 0
 
@@ -61,7 +61,7 @@ class ClassifyNumberAPIView(APIView):
             properties.append("armstrong")
         properties.append("odd" if is_odd else "even")
 
-        # Calculate the digit sum (using absolute value so negative sign is ignored).
+        # Calculate the digit sum using absolute value so negative sign is ignored.
         digit_sum = sum(int(digit) for digit in str(abs(number)))
 
         # Fetch a fun fact from the Numbers API.
