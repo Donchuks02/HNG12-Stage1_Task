@@ -16,13 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # Redirect the root URL to /api/classify-number/
-    path('', RedirectView.as_view(url='/api/classify-number/', permanent=False)),
-    # Include your app's URLs that contain the /api/classify-number/ endpoint.
-    path('api/', include('apiApp.urls')),  # replace 'myapp' with your actual app name
+    path('', include('apiApp.urls')),  # Replace 'myapp' with the name of your app
 ]
-
