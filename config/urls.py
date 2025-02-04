@@ -18,8 +18,9 @@ from django.contrib import admin
 from django.urls import path,  include
 from apiApp.views import home_redirect
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home_redirect, name='home'),
+    path('', home_redirect, name='home'),  # Home URL redirect
     path('api/', include('apiApp.urls')),
 ]
