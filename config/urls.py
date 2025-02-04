@@ -15,12 +15,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path,  include
-from apiApp.views import home_redirect
-
+from django.urls import path, include
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home_redirect, name='home'),  # Home URL redirect
-    path('api/', include('apiApp.urls')),
+    # Redirect the root URL to /api/classify-number/
+    path('', RedirectView.as_view(url='/api/classify-number/', permanent=False)),
+    # Include your app's URLs that contain the /api/classify-number/ endpoint.
+    path('api/', include('apiApp.urls')),  # replace 'myapp' with your actual app name
 ]
+

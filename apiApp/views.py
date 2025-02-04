@@ -1,78 +1,103 @@
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-import requests
 import math
+import requests
 
-def is_prime(n):
-    if n <= 1:
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+
+def is_prime(num):
+    """Check if a number is prime."""
+    if num < 2:
         return False
-    for i in range(2, int(n**0.5) + 1):
-        if n % i == 0:
+    # Check divisibility up to half the number (simple approach)
+    for i in range(2, num // 2 + 1):
+        if num % i == 0:
             return False
     return True
 
-def is_perfect(num: int) -> bool:
+
+def is_perfect(num):
+    """Check if a number is a perfect number (i.e., equals the sum of its proper divisors)."""
     if num < 6:
         return False
-
-    sum_of_divisors = 1
+    sum_of_divisors = 1  # Start with 1, which is a proper divisor.
+    # Loop through potential divisors up to sqrt(num)
     for i in range(2, int(math.sqrt(num)) + 1):
         if num % i == 0:
             sum_of_divisors += i
-            if i != num // i:
-                sum_of_divisors += num // i
-
+            complement = num // i
+            if complement != i:
+                sum_of_divisors += complement
     return sum_of_divisors == num
 
-def is_armstrong(num: int) -> bool:
-    length = len(str(num))
-    digit_power_sum = 0
-    temp = num
 
-    while temp != 0:
-        rem = temp % 10
-        digit_power_sum += rem ** length
-        temp //= 10
+def is_armstrong(num):
+    """Check if a number is an Armstrong (narcissistic) number."""
+    digits = str(num)
+    length = len(digits)
+    total = sum(int(digit) ** length for digit in digits)
+    return total == num
 
-    return digit_power_sum == num
 
-def digit_sum(n):
-    return sum(map(int, str(n)))
-
-def is_even(num: int) -> str:
+def is_even(num):
+    """Return 'even' or 'odd' depending on the parity of the number."""
     return "even" if num % 2 == 0 else "odd"
 
-def properties(num: int) -> list[str]:
-    props = [is_even(num)]
+
+def get_properties(num):
+    """Return a list of properties for the given number."""
+    properties = [is_even(num)]
     if is_armstrong(num):
-        props.append("armstrong")
-    return props
-
-@api_view(['GET'])
-def classify_number(request):
-    number = request.query_params.get('number', '371')  # Default to 371 if no number is provided
-    if not number.isdigit():
-        return Response({'number': 'alphabet', 'error': True}, status=400)
-    
-    number = int(number)
-    props = properties(number)
-    if is_prime(number):
-        props.append('prime')
-    if is_perfect(number):
-        props.append('perfect')
-    
-    response = requests.get(f'http://numbersapi.com/{number}/math')
-    fun_fact = response.text if response.status_code == 200 else 'No fun fact available'
-
-    return Response({
-        'number': number,
-        'is_prime': is_prime(number),
-        'is_perfect': is_perfect(number),
-        'properties': props,
-        'digit_sum': digit_sum(number),
-        'fun_fact': fun_fact
-    })
+        # If Armstrong, insert "armstrong" at the beginning.
+        properties.insert(0, "armstrong")
+    return properties
 
 
-def home_redirect(request):
-    return redirect('/api/classify-number/')
+def get_digit_sum(num):
+    """Calculate and return the sum of the digits of the number."""
+    return sum(int(digit) for digit in str(num))
+
+
+def get_fun_fact(num):
+    """
+    Fetch a fun fact about the number from the Numbers API.
+    This function makes a synchronous HTTP GET request.
+    """
+    try:
+        url = f"http://numbersapi.com/{num}/math"
+        response = requests.get(url)
+        if response.status_code == 200:
+            return response.text
+        else:
+            return f"No fun fact returned from the numbers API for the number: {num}"
+    except requests.RequestException:
+        return f"No fun fact returned from the numbers API for the number: {num}"
+
+
+
+class ClassifyNumberView(APIView):
+    def get(self, request, format=None):
+        # Retrieve the "number" query parameter; default to "371" if not provided.
+        number_str = request.query_params.get('number', '371')
+
+        # Validate and convert the parameter to an integer.
+        try:
+            num = int(number_str)
+        except ValueError:
+            return Response(
+                {"number": "alphabet", "error": True},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Assemble the response dictionary.
+        result = {
+            "number": num,
+            "is_prime": is_prime(num),
+            "is_perfect": is_perfect(num),
+            "properties": get_properties(num),
+            "digit_sum": get_digit_sum(num),
+            "fun_fact": get_fun_fact(num)
+        }
+
+        return Response(result, status=status.HTTP_200_OK)
