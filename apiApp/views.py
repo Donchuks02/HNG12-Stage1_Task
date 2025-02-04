@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import requests
@@ -52,3 +53,7 @@ def classify_number(request):
     fun_fact = response.text if response.status_code == 200 else 'No fun fact available'
 
     return Response({'number': number, 'is_prime': is_prime(number), 'is_perfect': is_perfect(number),'properties': properties,'digit_sum': digit_sum(number),  'fun_fact': fun_fact})
+
+
+def home_redirect(request):
+    return redirect('/api/classify-number/?number=371')

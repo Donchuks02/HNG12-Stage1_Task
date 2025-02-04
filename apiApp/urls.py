@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import classify_number
+from .views import classify_number, home_redirect
 
 urlpatterns = [
     path('classify-number/', classify_number, name='classify_number'),
